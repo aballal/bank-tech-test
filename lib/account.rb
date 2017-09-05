@@ -13,6 +13,10 @@ class Account
   end
 
   def statement
+    to_s
+  end
+
+  def to_s
     header +
       transactions.map { |transaction| formatted_transaction(transaction) }.join
   end

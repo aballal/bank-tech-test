@@ -7,14 +7,14 @@ describe Account do
 
   describe 'initialisation' do
     it 'displays a statement with no transactions' do
-      expect { puts account.statement }.to output(header).to_stdout
+      expect { puts account }.to output(header).to_stdout
     end
   end
 
   describe '#deposit' do
     it 'takes a date and an amount and increases the balance by the amount' do
       account.deposit('10/01/2012', 1000)
-      expect { puts account.statement }.to output(header + deposit).to_stdout
+      expect { puts account }.to output(header + deposit).to_stdout
     end
   end
 end
