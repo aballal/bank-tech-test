@@ -19,7 +19,7 @@ describe Account do
     end
   end
 
-  describe '#withdrawal' do
+  describe '#withdraw' do
     it 'takes a date and an amount and decreases the balance by the amount' do
       account.deposit('10/01/2012', 1000)
       account.withdraw('14/01/2012', 500)
