@@ -10,12 +10,14 @@ class Account
   def deposit(date, amount)
     update_balance(amount)
     insert_transaction(date, amount, balance)
+    nil
   end
 
   def withdraw(date, amount)
     fail_if_insufficient_balance(amount)
     update_balance(-amount)
     insert_transaction(date, -amount, balance)
+    nil
   end
 
   def statement
