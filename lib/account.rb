@@ -13,13 +13,8 @@ class Account
   end
 
   def statement
-    statement = header
-    transactions.each do |transaction|
-      statement += formatted_date(transaction[:date]) +
-                   formatted_amount(transaction[:amount]) +
-                   formatted_balance + "\n"
-    end
-    statement
+    header +
+      transactions.map { |transaction| formatted_transaction(transaction) }.join
   end
 
   private
@@ -28,6 +23,11 @@ class Account
 
   def header
     "date || credit || debit || balance\n"
+  end
+
+  def formatted_transaction(transaction)
+    formatted_date(transaction[:date]) +
+      formatted_amount(transaction[:amount]) + formatted_balance + "\n"
   end
 
   def formatted_date(date)
