@@ -3,13 +3,18 @@ require 'date'
 # Class representing an account
 class Account
   def initialize
-    @transactions = SortedSet.new
+    @transactions = []
     @balance = 0
   end
 
   def deposit(date, amount)
-    @transactions << { date: Date.parse(date), amount: amount * 1.0 }
-    @balance += amount
+    update_balance(amount)
+    insert_transaction(date, amount, balance)
+  end
+
+  def withdraw(date, amount)
+    update_balance(-amount)
+    insert_transaction(date, -amount, balance)
   end
 
   def statement
@@ -17,13 +22,24 @@ class Account
   end
 
   def to_s
-    header +
-      transactions.map { |transaction| formatted_transaction(transaction) }.join
+    header + transactions.reverse.map do |transaction|
+      formatted_transaction(transaction)
+    end.join
   end
 
   private
 
   attr_reader :transactions, :balance
+
+  def update_balance(amount)
+    @balance += amount
+  end
+
+  def insert_transaction(date, amount, balance)
+    @transactions << { date: Date.parse(date),
+                       amount: amount * 1.0,
+                       balance: balance }
+  end
 
   def header
     "date || credit || debit || balance\n"
@@ -31,7 +47,8 @@ class Account
 
   def formatted_transaction(transaction)
     formatted_date(transaction[:date]) +
-      formatted_amount(transaction[:amount]) + formatted_balance + "\n"
+      formatted_amount(transaction[:amount]) +
+      formatted_balance(transaction[:balance]) + "\n"
   end
 
   def formatted_date(date)
@@ -42,11 +59,11 @@ class Account
     if amount >= 0
       format('%.2f', amount) + ' || || '
     else
-      '|| ' + format('%.2f', -amount) + '|| '
+      '|| ' + format('%.2f', -amount) + ' || '
     end
   end
 
-  def formatted_balance
+  def formatted_balance(balance)
     format('%.2f', balance)
   end
 end
