@@ -13,6 +13,7 @@ class Account
   end
 
   def withdraw(date, amount)
+    fail_if_insufficient_balance(amount)
     update_balance(-amount)
     insert_transaction(date, -amount, balance)
   end
@@ -39,6 +40,10 @@ class Account
     @transactions << { date: Date.parse(date),
                        amount: amount * 1.0,
                        balance: balance }
+  end
+
+  def fail_if_insufficient_balance(amount)
+    raise 'Insufficient balance' if amount > balance
   end
 
   def header

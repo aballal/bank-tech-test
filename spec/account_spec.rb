@@ -25,5 +25,9 @@ describe Account do
       account.withdraw('14/01/2012', 500)
       expect { puts account }.to output(header + withdrawal + deposit).to_stdout
     end
+
+    it 'raises an error when attempting to withdraw more than the balance' do
+      expect { account.withdraw('14/01/2012', 500) }.to raise_error 'Insufficient balance'
+    end
   end
 end
